@@ -1,5 +1,0 @@
-package org.ashishmanral.hw10;
-
-public class DragController {
-
-}

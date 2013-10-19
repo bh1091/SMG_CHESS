@@ -1,3 +1,0 @@
-# Module haoxiangzuo
-# RPC service class, partial path of RPC policy file
-org.haoxiangzuo.hw6.client.ChessService, 32892E85F36E708EDD97FC602585E804.gwt.rpc

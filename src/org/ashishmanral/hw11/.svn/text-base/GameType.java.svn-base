@@ -1,5 +1,0 @@
-package org.ashishmanral.hw11;
-
-public enum GameType {
-	NEWGAME, GAMEINPROGRESS, NEWGAMEREQUEST;
-}
