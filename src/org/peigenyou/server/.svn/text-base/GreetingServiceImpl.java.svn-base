@@ -1,0 +1,194 @@
+package org.peigenyou.server;
+
+
+
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.peigenyou.hw3.GreetingService;
+import org.peigenyou.hw3.Match;
+import org.peigenyou.hw3.Player;
+import org.shared.chess.*;
+
+
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelService;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.Objectify;
+import com.googlecode.objectify.ObjectifyService;
+public class GreetingServiceImpl extends RemoteServiceServlet implements GreetingService{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = Long.MAX_VALUE-1;
+	private ArrayList<String> waitingplayers=new ArrayList<String>();
+	private ChannelService channelService = ChannelServiceFactory.getChannelService();
+	private Objectify ofy = ObjectifyService.ofy();
+
+	{
+	ObjectifyService.register(Player.class);
+  ObjectifyService.register(Match.class);
+	}
+  @Override
+	public Player greetServer(String name) {
+		UserService userService = UserServiceFactory.getUserService();
+		
+		String email=userService.getCurrentUser().getEmail();
+		Player p1=ofy.load().type(Player.class).id(email).get();
+		if(p1==null) {
+			Player player=new Player();
+			player.Email=email;
+			player.Name=userService.getCurrentUser().getNickname();
+			player.Tokens=channelService.createChannel(email,10);
+			ofy.save().entity(player).now();
+			return player;
+		}
+		
+		p1.Name=userService.getCurrentUser().getNickname();
+		p1.Tokens=channelService.createChannel(email,10);
+		return p1;
+	}
+
+	@Override
+	public String autoMatch(String player,String newstate) {
+		
+		if(!waitingplayers.isEmpty()){
+			if(!waitingplayers.contains(player))	{
+				waitingplayers.add(player);
+			}
+			outer:
+			for(int i=0;i<waitingplayers.size();++i){
+				if(waitingplayers.get(i).equals(player)) continue outer;
+				else {
+					String oppoent = waitingplayers.get(i);
+					Match match=new Match();
+					match.blackID=player;
+					match.whiteID=oppoent;
+					match.startDate=new Date();
+					match.MatchID=match.startDate.toGMTString();
+					match.state=newstate;
+					Player blackPlayer=ofy.load().type(Player.class).id(player).get();
+					Player whitePlayer=ofy.load().type(Player.class).id(oppoent).get();
+					if(blackPlayer==null|| whitePlayer==null) return "error";
+					blackPlayer.Matches.add(match.MatchID);
+					whitePlayer.Matches.add(match.MatchID);
+					ofy.save().entity(blackPlayer).now();
+					ofy.save().entity(whitePlayer).now();
+					ofy.save().entity(match).now();	
+					
+					if(waitingplayers.contains(player))waitingplayers.remove(player);
+					if(waitingplayers.contains(oppoent))waitingplayers.remove(oppoent);
+					channelService.sendMessage(new ChannelMessage(player,match.state));
+					channelService.sendMessage(new ChannelMessage(oppoent,match.state));
+					return oppoent;
+				}
+			} 
+			
+		}
+		else
+		{
+			if(!waitingplayers.contains(player))	waitingplayers.add(player);
+		}
+		return null;
+	}
+	
+	@Override
+	public void submitMove(String matchID,String state) {
+		UserService userService = UserServiceFactory.getUserService();
+		String userID=userService.getCurrentUser().getEmail();
+		Match match=ofy.load().type(Match.class).id(matchID).get();
+		match.state=state;
+		ofy.save().entity(match).now();
+		String a=userID.equals(match.blackID)?match.whiteID:match.blackID;
+		channelService.sendMessage(new ChannelMessage(a,state));
+		
+	}
+
+	@Override
+	public Match loadMatch(String ID) {
+		Match match=ofy.load().type(Match.class).id(ID).get();
+		return match;
+	}
+
+	@Override
+	public void creatMatch(Match match) {
+		ofy.save().entity(match).now();
+		Player blackPlayer=ofy.load().type(Player.class).id(match.blackID).get();
+		Player whitePlayer=ofy.load().type(Player.class).id(match.whiteID).get();
+		if(blackPlayer==null){
+			blackPlayer=new Player();
+			blackPlayer.Email=match.blackID;
+		}
+		if(whitePlayer==null){
+			whitePlayer=new Player();
+			whitePlayer.Email=match.whiteID;
+		}
+		blackPlayer.Matches.add(match.MatchID);
+		whitePlayer.Matches.add(match.MatchID);
+		ofy.save().entity(blackPlayer).now();
+		ofy.save().entity(whitePlayer).now();
+	}
+
+	@Override
+	public void delMatch(String ID) {
+		Match newMatch=ofy.load().type(Match.class).id(ID).get();
+		Player blackPlayer=ofy.load().type(Player.class).id(newMatch.blackID).get();
+		Player whitePlayer=ofy.load().type(Player.class).id(newMatch.whiteID).get();
+		blackPlayer.Matches.remove(newMatch.MatchID);
+		whitePlayer.Matches.remove(newMatch.MatchID);
+		ofy.save().entity(blackPlayer).now();
+		ofy.save().entity(whitePlayer).now();
+		ofy.delete().type(Match.class).id(ID);
+		channelService.sendMessage(new ChannelMessage(newMatch.blackID,newMatch.state));
+		channelService.sendMessage(new ChannelMessage(newMatch.whiteID,newMatch.state));
+		
+	}
+
+	@Override
+	public Player updatePlayer() {
+		UserService userService = UserServiceFactory.getUserService();
+		Player player=ofy.load().type(Player.class).id(userService.getCurrentUser().getEmail()).get();
+		return player;
+	}
+
+	@Override
+	public void sendResult(Match match, String result) {
+		Player blackPlayer=ofy.load().type(Player.class).id(match.blackID).get();
+		Player whitePlayer=ofy.load().type(Player.class).id(match.whiteID).get();
+		double expB,expW,actB,actW,rB,rW;
+		rB=blackPlayer.rank;
+		rW=whitePlayer.rank;
+		if(result.equals("Draw")){
+			actB=0.5;
+			actW=0.5;
+		}else{
+			if(result.equals("Black")){
+				actB=1;
+				actW=0;
+			}
+			else{
+				actB=0;
+				actW=1;
+			}
+		}
+		expB=1/(1+(double)Math.pow(10, ((double)(rW-rB))/400.00));
+		expW=1/(1+(double)Math.pow(10, ((double)(rB-rW))/400.00));
+		blackPlayer.rank=(int) (rB+(double)15*((double)actB-(double)expB));
+		whitePlayer.rank=(int) (rW+(double)15*((double)actW-(double)expW));
+		match.isOver=true;
+		ofy.save().entities(match).now();
+		ofy.save().entities(blackPlayer).now();
+		ofy.save().entities(whitePlayer).now();
+	}
+	
+	
+	
+}

@@ -1,0 +1,131 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3
+END
+Graphics.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/625/trunk/eclipse/src/org/alishah/hw3/Graphics.ui.xml
+END
+BLACK_PAWN.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_PAWN.png
+END
+blank_square.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3/blank_square.png
+END
+Graphics.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/901/trunk/eclipse/src/org/alishah/hw3/Graphics.java
+END
+BLACK_QUEEN.png
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_QUEEN.png
+END
+GameImages.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3/GameImages.java
+END
+Presenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/901/trunk/eclipse/src/org/alishah/hw3/Presenter.java
+END
+BLACK_KNIGHT.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_KNIGHT.png
+END
+WHITE_KING.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_KING.png
+END
+background.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3/background.png
+END
+WHITE_ROOK.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_ROOK.png
+END
+StateSerializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/901/trunk/eclipse/src/org/alishah/hw3/StateSerializer.java
+END
+WHITE_BISHOP.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_BISHOP.png
+END
+WHITE_QUEEN.png
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_QUEEN.png
+END
+ChessEntryPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3/ChessEntryPoint.java
+END
+BLACK_KING.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_KING.png
+END
+BLACK_ROOK.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_ROOK.png
+END
+BLACK_BISHOP.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/BLACK_BISHOP.png
+END
+WHITE_PAWN.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_PAWN.png
+END
+WHITE_KNIGHT.png
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/609/trunk/eclipse/src/org/alishah/hw3/WHITE_KNIGHT.png
+END
+GameCss.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/904/trunk/eclipse/src/org/alishah/hw3/GameCss.java
+END

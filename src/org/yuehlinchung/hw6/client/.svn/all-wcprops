@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client
+END
+Graphics.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client/Graphics.ui.xml
+END
+BQueen.png
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BQueen.png
+END
+ChessMessages_cn.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client/ChessMessages_cn.properties
+END
+ChessMessages.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client/ChessMessages.java
+END
+Graphics.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/826/trunk/eclipse/src/org/yuehlinchung/hw6/client/Graphics.java
+END
+BPawn.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BPawn.png
+END
+GameImages.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/GameImages.java
+END
+Presenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client/Presenter.java
+END
+WKing.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WKing.png
+END
+BKnight.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BKnight.png
+END
+WRook.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WRook.png
+END
+StateHistory.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/StateHistory.java
+END
+GameService.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/827/trunk/eclipse/src/org/yuehlinchung/hw6/client/GameService.java
+END
+WQueen.png
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WQueen.png
+END
+WBishop.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WBishop.png
+END
+ChessEntryPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/849/trunk/eclipse/src/org/yuehlinchung/hw6/client/ChessEntryPoint.java
+END
+BKing.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BKing.png
+END
+BRook.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BRook.png
+END
+GameServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/827/trunk/eclipse/src/org/yuehlinchung/hw6/client/GameServiceAsync.java
+END
+WPawn.png
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WPawn.png
+END
+BBishop.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/BBishop.png
+END
+WKnight.png
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/WKnight.png
+END
+GameCss.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/702/trunk/eclipse/src/org/yuehlinchung/hw6/client/GameCss.java
+END

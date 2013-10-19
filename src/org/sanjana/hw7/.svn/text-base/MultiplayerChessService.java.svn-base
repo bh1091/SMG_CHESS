@@ -1,0 +1,24 @@
+package org.sanjana.hw7;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.sanjana.hw6.LoginDetails;
+import org.sanjana.hw6.StateManager;
+
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.googlecode.objectify.Key;
+
+@RemoteServiceRelativePath("multiplayer")
+public interface MultiplayerChessService extends RemoteService{
+
+	public String match();
+	public void removeMatch(Long matchID);
+	public void sendMove(String matchID, String moveString);
+	public void automatch();
+	public void cancelAutoMatch();
+	public Boolean emailMatch(String email);
+	public ArrayList<String> loadAllMatches(LoginDetails user);
+	public String getMatch(Long matchId);
+}

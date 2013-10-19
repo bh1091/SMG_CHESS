@@ -1,0 +1,248 @@
+package org.paulsultan.hw3;
+
+import org.paulsultan.hw3.Presenter.View;
+
+import org.shared.chess.Color;
+import org.shared.chess.GameResult;
+import org.shared.chess.GameResultReason;
+import org.shared.chess.Piece;
+import org.shared.chess.PieceKind;
+import org.shared.chess.Position;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.DragOverEvent;
+import com.google.gwt.event.dom.client.DragOverHandler;
+import com.google.gwt.event.dom.client.DragStartEvent;
+import com.google.gwt.event.dom.client.DragStartHandler;
+import com.google.gwt.event.dom.client.DropEvent;
+import com.google.gwt.event.dom.client.DropHandler;
+import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
+
+public class Graphics extends Composite implements View {
+	private static GameImages gameImages = GWT.create(GameImages.class);
+	private static GraphicsUiBinder uiBinder = GWT.create(GraphicsUiBinder.class);
+
+	interface GraphicsUiBinder extends UiBinder<Widget, Graphics> {}
+
+	@UiField GameCss css;
+	@UiField Label gameStatus;
+	@UiField Grid gameGrid;
+	@UiField Grid promotionGrid;
+	@UiField Button restartButton;
+	@UiField Button saveButton;
+	@UiField Button loadButton;
+	@UiField Label player0;
+	@UiField Label player1;
+	@UiField Button clearPlayers;
+	
+	private Image[][] images = new Image[8][8];
+	private Image[] promotionImages = new Image[4];
+	Presenter presenter;
+
+	public Graphics() {
+		presenter = new Presenter();
+		initWidget(uiBinder.createAndBindUi(this));
+		gameGrid.resize(8, 8);
+		gameGrid.setCellPadding(0);
+		gameGrid.setCellSpacing(0);
+		gameGrid.setBorderWidth(0);
+		
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				final Image image = new Image();
+				images[row][col] = image;
+				image.setWidth("100%");
+
+				if(row%2==0 && col%2==1 || row%2==1 && col%2==0)
+					image.setResource(gameImages.blackTile());
+				else
+					image.setResource(gameImages.whiteTile());
+				image.getElement().setDraggable(Element.DRAGGABLE_TRUE);
+				gameGrid.setWidget(row, col, image);
+			}
+		}
+		gameGrid.addDragOverHandler(new DragOverHandler(){
+			//"you must add a dragoverhandler to create a target"
+			public void onDragOver(DragOverEvent event){}
+		});
+		
+		//build promotion grid under board
+		promotionGrid.resize(1, 4);
+		promotionImages[0]=new Image(gameImages.goldKnight());
+		promotionImages[1]=new Image(gameImages.goldBishop());
+		promotionImages[2]=new Image(gameImages.goldRook());
+		promotionImages[3]=new Image(gameImages.goldQueen());	
+		promotionGrid.setWidget(0, 0, promotionImages[0]);
+		promotionGrid.setWidget(0, 1, promotionImages[1]);
+		promotionGrid.setWidget(0, 2, promotionImages[2]);
+		promotionGrid.setWidget(0, 3, promotionImages[3]);
+		
+	}
+
+	
+	
+	@Override
+	public void setPiece(int row, int col, Piece piece) {
+		//sets the resource on the board for position
+		if (piece != null) {
+			if(piece.getKind()==PieceKind.KING){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whiteKing());
+				else
+					images[row][col].setResource(gameImages.blackKing());
+			}
+			else if(piece.getKind()==PieceKind.QUEEN){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whiteQueen());
+				else
+					images[row][col].setResource(gameImages.blackQueen());
+			}
+			else if(piece.getKind()==PieceKind.ROOK){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whiteRook());
+				else
+					images[row][col].setResource(gameImages.blackRook());
+			}
+			else if(piece.getKind()==PieceKind.BISHOP){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whiteBishop());
+				else
+					images[row][col].setResource(gameImages.blackBishop());
+			}
+			else if(piece.getKind()==PieceKind.KNIGHT){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whiteKnight());
+				else
+					images[row][col].setResource(gameImages.blackKnight());
+			}
+			else if(piece.getKind()==PieceKind.PAWN){
+				if (piece.getColor().isWhite())
+					images[row][col].setResource(gameImages.whitePawn());
+				else
+					images[row][col].setResource(gameImages.blackPawn());
+			}
+		}
+		else{
+			//square is null, put tile back on it
+			if (row%2==0 && col%2==1 || row%2==1 && col%2==0)
+				images[row][col].setResource(gameImages.blackTile());
+			else
+				images[row][col].setResource(gameImages.whiteTile());
+		}
+	}
+	@Override
+	public void setWhoseTurn(Color color) {
+		//sets status text
+		if (color == Color.BLACK)
+			gameStatus.setText("Black's Turn");
+		else
+			gameStatus.setText("White's Turn");
+	}
+	@Override
+	public void setPlayer(String email, int index) {
+		//sets status text
+		if (index==0)
+			player0.setText("Black: "+email);
+		else if(index==1)
+			player1.setText("White: "+email);
+	}
+	@Override
+	public void setHighlighted(int row, int col, boolean highlighted) {
+		//applies css highlighting 
+		Element element = images[row][col].getElement();
+		if (highlighted)
+			element.setClassName(css.highlighted());
+		else
+			element.removeClassName(css.highlighted());
+	}
+	@Override
+	public void setGameResult(GameResult gameResult) {
+		//sets end of game text
+		if (gameResult == null)
+			return;
+
+		GameResultReason reason = gameResult.getGameResultReason();  
+		if (reason.name()=="CHECKMATE")
+		  gameStatus.setText("Checkmate Winner is "+gameResult.getWinner());
+		else if (reason.name()=="FIFTY_MOVE_RULE") 
+		  gameStatus.setText("Fifty Move Rule Draw!");
+		else if (reason.name()=="THREEFOLD_REPITITION_RULE")
+		  gameStatus.setText("Threefold Repitition Rule Draw!");
+		else if (reason.name()=="STALEMATE")
+		  gameStatus.setText("Stalemate.");
+	}
+
+	@Override
+	public Image getImage(int row, int col) {
+		//get image for specific space
+		return images[row][col];
+	}
+	@Override
+	public Image getImage(Position pos) {
+		return images[7-pos.getRow()][pos.getCol()];
+	}
+	
+	@Override
+	public Image getPromotionImage(int index) {
+		return promotionImages[index];
+	}
+	@Override
+	public void setPromotionGridVisible(boolean vis) {
+		promotionGrid.setVisible(vis);
+	}
+	
+	@Override
+	public Button getSaveButton(){
+		return saveButton;
+	}
+	@Override
+	public Button getLoadButton(){
+		return loadButton;
+	}
+	@Override
+	public Button getRestartButton() {
+		return restartButton;
+	}
+	@Override
+	public Button getClearPlayersButton() {
+		return clearPlayers;
+	}
+		
+	@Override
+	public void addDragDropHandlers() {
+		//add drag and drop handlers for each image
+		for (int col = 0; col < 8; col++) {
+			for (int row = 0; row < 8; row++) {
+				final int f_row = row;
+				final int f_col = col;
+				
+				images[7-f_row][f_col].addDragStartHandler(new DragStartHandler(){
+					public void onDragStart(DragStartEvent event){
+						presenter.squareClicked(f_row, f_col);
+						//get image under cursor
+						event.getDataTransfer().setDragImage(
+									images[f_row][f_col].getElement(),
+									event.getNativeEvent().getClientX(),
+									event.getNativeEvent().getClientY());
+					}
+				});
+				images[7-f_row][f_col].addDropHandler(new DropHandler(){
+					public void onDrop(DropEvent event) {
+						event.preventDefault();
+						
+						presenter.squareClicked(f_row, f_col);
+					}
+				});
+			}
+		}
+	}
+	
+}

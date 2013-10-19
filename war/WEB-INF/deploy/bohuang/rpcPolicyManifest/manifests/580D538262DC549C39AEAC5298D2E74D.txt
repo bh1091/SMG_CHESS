@@ -1,0 +1,2 @@
+serviceClass: org.bohuang.hw6.client.ChessService
+path: 9C1E25D9C4E6B753FA8CA3C39B1E755E.gwt.rpc

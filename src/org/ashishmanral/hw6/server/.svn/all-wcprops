@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/882/trunk/eclipse/src/org/ashishmanral/hw6/server
+END
+UpdateStateServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/server/UpdateStateServiceImpl.java
+END
+PlayerManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/server/PlayerManager.java
+END
+LoginServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/882/trunk/eclipse/src/org/ashishmanral/hw6/server/LoginServiceImpl.java
+END
+BoardDetails.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/server/BoardDetails.java
+END
+BoardManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/server/BoardManager.java
+END

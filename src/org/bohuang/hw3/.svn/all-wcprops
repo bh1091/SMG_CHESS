@@ -1,0 +1,227 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/990/trunk/eclipse/src/org/bohuang/hw3
+END
+queen_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/queen_b_w.png
+END
+queen_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/queen_w_b.png
+END
+king_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/king_w_w.png
+END
+rook_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/rook_w_w.png
+END
+Graphics.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/990/trunk/eclipse/src/org/bohuang/hw3/Graphics.java
+END
+click.wav
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/616/trunk/eclipse/src/org/bohuang/hw3/click.wav
+END
+Presenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/923/trunk/eclipse/src/org/bohuang/hw3/Presenter.java
+END
+pawn_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/pawn_b_b.png
+END
+click.mp3
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/616/trunk/eclipse/src/org/bohuang/hw3/click.mp3
+END
+StateSerializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/793/trunk/eclipse/src/org/bohuang/hw3/StateSerializer.java
+END
+knight_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/knight_b_b.png
+END
+ChessEntryPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/990/trunk/eclipse/src/org/bohuang/hw3/ChessEntryPoint.java
+END
+bishop_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/bishop_w_b.png
+END
+bishop_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/bishop_b_w.png
+END
+queen_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/queen_w_w.png
+END
+king_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/king_b_b.png
+END
+rook_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/rook_b_b.png
+END
+pawn_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/pawn_b_w.png
+END
+pawn_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/pawn_w_b.png
+END
+GameCss.java
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/GameCss.java
+END
+Graphics.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/923/trunk/eclipse/src/org/bohuang/hw3/Graphics.ui.xml
+END
+knight_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/knight_b_w.png
+END
+knight_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/knight_w_b.png
+END
+MobileDropController.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/990/trunk/eclipse/src/org/bohuang/hw3/MobileDropController.java
+END
+GameImages.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/990/trunk/eclipse/src/org/bohuang/hw3/GameImages.java
+END
+bishop_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/bishop_w_w.png
+END
+black_tile.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/black_tile.png
+END
+queen_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/queen_b_b.png
+END
+king_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/king_w_b.png
+END
+king_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/king_b_w.png
+END
+rook_w_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/rook_w_b.png
+END
+rook_b_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/rook_b_w.png
+END
+pawn_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/pawn_w_w.png
+END
+LoginPanel.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/793/trunk/eclipse/src/org/bohuang/hw3/LoginPanel.java
+END
+knight_w_w.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/knight_w_w.png
+END
+bishop_b_b.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/bishop_b_b.png
+END
+white_tile.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/527/trunk/eclipse/src/org/bohuang/hw3/white_tile.png
+END

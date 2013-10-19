@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><permutations>
+<permutation name="4DFD1B3FFF998CDC8B42D26938F1059D">
+<locale>zh</locale>
+<phonegap.env>yes</phonegap.env>
+</permutation>
+<permutation name="F8E127427689426CD1C0A8B31C38BEF7">
+<locale>zh</locale>
+<phonegap.env>no</phonegap.env>
+</permutation>
+<permutation name="4A1E3673278B3FBA646CC2F32FDDA3CF">
+<phonegap.env>yes</phonegap.env>
+<locale>default</locale>
+</permutation>
+<permutation name="1D3A9169F2041A166865CE72EDEBC9C6">
+<locale>default</locale>
+<phonegap.env>no</phonegap.env>
+</permutation>
+</permutations>

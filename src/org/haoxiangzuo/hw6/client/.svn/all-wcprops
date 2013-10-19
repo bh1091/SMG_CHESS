@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/986/trunk/eclipse/src/org/haoxiangzuo/hw6/client
+END
+MyConstant.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/823/trunk/eclipse/src/org/haoxiangzuo/hw6/client/MyConstant.java
+END
+MyConstant_zh.properties
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/823/trunk/eclipse/src/org/haoxiangzuo/hw6/client/MyConstant_zh.properties
+END
+UserInfos.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/819/trunk/eclipse/src/org/haoxiangzuo/hw6/client/UserInfos.java
+END
+MyMessages.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/948/trunk/eclipse/src/org/haoxiangzuo/hw6/client/MyMessages.java
+END
+ChessServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/986/trunk/eclipse/src/org/haoxiangzuo/hw6/client/ChessServiceAsync.java
+END
+ChessService.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/986/trunk/eclipse/src/org/haoxiangzuo/hw6/client/ChessService.java
+END
+MyMessages_zh.properties
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/948/trunk/eclipse/src/org/haoxiangzuo/hw6/client/MyMessages_zh.properties
+END

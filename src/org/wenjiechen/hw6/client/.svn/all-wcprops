@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/887/trunk/eclipse/src/org/wenjiechen/hw6/client
+END
+LoginServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/801/trunk/eclipse/src/org/wenjiechen/hw6/client/LoginServiceAsync.java
+END
+LoginService.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/801/trunk/eclipse/src/org/wenjiechen/hw6/client/LoginService.java
+END
+ChessGameServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/887/trunk/eclipse/src/org/wenjiechen/hw6/client/ChessGameServiceAsync.java
+END
+LoginInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/801/trunk/eclipse/src/org/wenjiechen/hw6/client/LoginInfo.java
+END
+ChessGameService.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/887/trunk/eclipse/src/org/wenjiechen/hw6/client/ChessGameService.java
+END

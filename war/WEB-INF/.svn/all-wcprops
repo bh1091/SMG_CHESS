@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/svn/!svn/ver/991/trunk/eclipse/war/WEB-INF
+END
+logging.properties
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/617/trunk/eclipse/war/WEB-INF/logging.properties
+END
+appengine-web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/793/trunk/eclipse/war/WEB-INF/appengine-web.xml
+END
+web.xml.r712
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/797/trunk/eclipse/war/WEB-INF/web.xml.r712
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/991/trunk/eclipse/war/WEB-INF/web.xml
+END

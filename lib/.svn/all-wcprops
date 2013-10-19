@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 35
+/svn/!svn/ver/898/trunk/eclipse/lib
+END
+gin-2.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/661/trunk/eclipse/lib/gin-2.0.jar
+END
+mockito-all-1.9.5.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/492/trunk/eclipse/lib/mockito-all-1.9.5.jar
+END
+guice-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/661/trunk/eclipse/lib/guice-3.0.jar
+END
+guava-14.0-rc1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/47/trunk/eclipse/lib/guava-14.0-rc1.jar
+END
+javax.inject.jar
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/!svn/ver/661/trunk/eclipse/lib/javax.inject.jar
+END
+aopalliance.jar
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/661/trunk/eclipse/lib/aopalliance.jar
+END
+gwtphonegap-2.4.0.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/898/trunk/eclipse/lib/gwtphonegap-2.4.0.0.jar
+END
+gwt-dnd-3.2.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/617/trunk/eclipse/lib/gwt-dnd-3.2.0.jar
+END
+guava-gwt-14.0-rc1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/47/trunk/eclipse/lib/guava-gwt-14.0-rc1.jar
+END
+guice-assistedinject-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/661/trunk/eclipse/lib/guice-assistedinject-3.0.jar
+END
+gwt-gae-channel-2.0.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/646/trunk/eclipse/lib/gwt-gae-channel-2.0.0.jar
+END
+mgwt-1.1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/872/trunk/eclipse/lib/mgwt-1.1.2.jar
+END

@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/1009/trunk/eclipse/src/org/longjuntan/hw3
+END
+Graphics.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/886/trunk/eclipse/src/org/longjuntan/hw3/Graphics.ui.xml
+END
+ChessEntryPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/886/trunk/eclipse/src/org/longjuntan/hw3/ChessEntryPoint.java
+END
+Graphics.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/886/trunk/eclipse/src/org/longjuntan/hw3/Graphics.java
+END
+GameImages.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/548/trunk/eclipse/src/org/longjuntan/hw3/GameImages.java
+END
+Presenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/886/trunk/eclipse/src/org/longjuntan/hw3/Presenter.java
+END
+GameAudioFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/699/trunk/eclipse/src/org/longjuntan/hw3/GameAudioFactory.java
+END
+GameCss.java
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/613/trunk/eclipse/src/org/longjuntan/hw3/GameCss.java
+END
+Utils.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/886/trunk/eclipse/src/org/longjuntan/hw3/Utils.java
+END

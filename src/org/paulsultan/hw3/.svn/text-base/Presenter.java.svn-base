@@ -1,0 +1,476 @@
+package org.paulsultan.hw3;
+
+import java.util.Set;
+
+import org.paulsultan.hw2.StateChangerImpl;
+import org.paulsultan.hw2_5.StateExplorerImpl;
+import org.paulsultan.hw6.LoginInfo;
+import org.paulsultan.hw6.client.ChessService;
+import org.paulsultan.hw6.client.ChessServiceAsync;
+
+import org.shared.chess.Color;
+import org.shared.chess.GameResult;
+import org.shared.chess.Move;
+import org.shared.chess.Piece;
+import org.shared.chess.PieceKind;
+import org.shared.chess.Position;
+import org.shared.chess.State;
+import org.shared.chess.StateChanger;
+import org.shared.chess.StateExplorer;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.animation.client.Animation;
+import com.google.gwt.appengine.channel.client.Channel;
+import com.google.gwt.appengine.channel.client.ChannelError;
+import com.google.gwt.appengine.channel.client.ChannelFactoryImpl;
+import com.google.gwt.appengine.channel.client.SocketListener;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.storage.client.Storage;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Image;
+import com.google.web.bindery.event.shared.HandlerRegistration;
+
+public class Presenter {
+	public interface View {
+		/**
+		 * Renders the piece at this position. If piece is null then the
+		 * position is empty.
+		 */
+		void setPiece(int row, int col, Piece piece);
+		/**
+		 * Turns the highlighting on or off at this cell. Cells that can be
+		 * clicked should be highlighted.
+		 */
+		void setHighlighted(int row, int col, boolean highlighted);
+		/**
+		 * Indicate whose turn it is.
+		 */
+		void setWhoseTurn(Color color);
+		/**
+		 * Indicate whether the game is in progress or over.
+		 */
+		void setGameResult(GameResult gameResult);
+		
+		void setPlayer(String email, int index);
+		Image getImage(int row, int col);
+		Image getImage(Position pos);
+		Button getRestartButton();
+		Button getSaveButton();
+		Button getLoadButton();
+		Button getClearPlayersButton();
+		Image getPromotionImage(int i);
+		void setPromotionGridVisible(boolean vis);
+		void addDragDropHandlers();
+	}
+
+	View view;
+	
+	State state;
+	StateChanger stateChanger;
+	StateExplorer stateExplorer;
+	
+	Position activePosition;
+	Position promotionPos;
+	HandlerRegistration[][] handlers;
+	HandlerRegistration[] promotionHandlers;
+	AudioControl audioController;
+	ChessServiceAsync chessServiceAsync;
+	LoginInfo loginInfo = null;
+	Color color;
+	
+	
+		
+	public Presenter() {
+		this.audioController = new AudioControl();
+		this.stateChanger = new StateChangerImpl();
+		this.stateExplorer = new StateExplorerImpl();
+		this.state = new State();
+		
+		this.activePosition = null;
+		this.handlers = new HandlerRegistration[8][8];
+		this.promotionHandlers = new HandlerRegistration[4];
+		this.promotionPos = null;
+		
+		chessServiceAsync = GWT.create(ChessService.class);
+	}
+	
+	public void setView(View view) {
+		this.view = view;
+
+		//get login token
+		chessServiceAsync.getUserChannelToken(loginInfo.getEmailAddress(), new AsyncCallback<String>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("getUserChannelToken failure");
+			}
+
+			@Override
+			public void onSuccess(String result){				
+				//get player names on load
+				chessServiceAsync.getPlayers(new AsyncCallback<String>(){
+					@Override
+					public void onFailure(Throwable caught) {
+						Window.alert("getPlayers failure");
+					}
+
+					@Override
+					public void onSuccess(String result){	
+						String[] players=result.split(",");
+						setPlayer(players[0], 0);
+						setPlayer(players[1], 1);
+						
+						if (players[0]==loginInfo.getEmailAddress())
+							color=Color.BLACK;
+						else if (players[1]==loginInfo.getEmailAddress())
+							color=Color.WHITE;
+					}
+				});
+				
+				
+				//open up the channel
+				Channel channel = new ChannelFactoryImpl().createChannel(result);
+				channel.open(new SocketListener(){
+					@Override
+					public void onOpen() {
+						//Window.alert("Channel opened.");
+					}
+					@Override
+					public void onMessage(String message) {						
+						//Window.alert("Received: " + message);
+						setState(StateSerializer.parse(message));
+						
+					}
+					@Override
+					public void onError(ChannelError error) {
+						Window.alert("Channel error: "+error.getCode()+" : "+error.getDescription());
+					}
+					@Override
+					public void onClose() {
+						Window.alert("Channel closed!");
+					}
+			    });
+			}
+		});
+
+		
+	}	
+	
+	public void setState(State state){
+		//populates the board by state
+		this.state = state;
+		view.setWhoseTurn(state.getTurn());
+		view.setGameResult(state.getGameResult());
+		
+		//refresh player names after each move
+		chessServiceAsync.getPlayers(new AsyncCallback<String>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("getPlayers failure");
+			}
+
+			@Override
+			public void onSuccess(String result){	
+				String[] players=result.split(",");
+				setPlayer(players[0], 0);
+				setPlayer(players[1], 1);
+				
+				if (players[0].equals(loginInfo.getEmailAddress()))
+					color=Color.BLACK;
+				else if (players[1].equals(loginInfo.getEmailAddress()))
+					color=Color.WHITE;
+			}
+		});
+		
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				//white is on bottom
+				view.setPiece(7-row, col, state.getPiece(row, col));
+			}
+		}
+	}
+
+	public void bindHandlers(){
+		//add elements to the view on module load
+		this.audioController.addTrack("move");
+		this.audioController.addTrack("capture");
+		this.initBoardHandlers();
+		this.initPromotionHandlers();
+		
+		History.addValueChangeHandler(new ValueChangeHandler<String>() {
+			//when the back button is pressed
+			public void onValueChange(ValueChangeEvent<String> event) {
+				try {
+					String token = event.getValue();
+					state = StateSerializer.parse(token);
+					setState(state);
+				}
+				catch(Exception e) {
+					state = new State();
+					setState(state);
+				}
+			}
+		});
+		
+		this.view.getRestartButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				restartClicked();
+			}
+		});
+		this.view.getLoadButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				loadClicked();
+			}
+		});
+		this.view.getSaveButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				saveClicked();
+			}
+		});
+		this.view.getClearPlayersButton().addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event){
+				clearPlayersClicked();
+			}
+		});
+	}
+	public void initPromotionHandlers(){
+		//add click handlers for the promotion images
+		for (int i = 0; i < 4; i++) {
+			final int index = i;
+			promotionHandlers[i] = view.getPromotionImage(i).addClickHandler(
+				new ClickHandler(){
+					@Override
+					public void onClick(ClickEvent event){
+						setPromotion(index);
+					}
+				});
+		}
+		view.setPromotionGridVisible(false);
+	}
+	public void initBoardHandlers(){
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				final int r = 7 - row;
+				final int c = col;
+				handlers[row][col] = this.view.getImage(row, col).addClickHandler(
+						new ClickHandler() {
+							@Override
+							public void onClick(ClickEvent event){
+								squareClicked(r, c);
+							}
+						});
+			}
+		}
+	}
+	public void removeHandlers(){
+		for (int row = 0; row < 8; row++) {
+			for (int col = 0; col < 8; col++) {
+				handlers[row][col].removeHandler();
+			}
+		}
+	}
+
+	public void highlightMoves(Position pos){
+		//add highlighting to possible moves
+		activePosition = pos;
+		Set<Move> moves = stateExplorer.getPossibleMovesFromPosition(state, activePosition);
+		for(Move move : moves) {
+			view.setHighlighted(7-move.getTo().getRow(), move.getTo().getCol(), true);
+		}
+	}
+	public void blurBoard(){
+		//remove highlighting
+		activePosition = null;
+		for (int row = 0; row < 8; row++) {
+			for(int col = 0; col < 8; col++) {
+				view.setHighlighted(row, col, false);
+			}
+		}
+	}
+	
+	public void setPromotion(int index){
+		//promotion piece is clicked
+		PieceKind promotionPiece = PieceKind.PAWN;
+		if(index==0)
+			promotionPiece = PieceKind.KNIGHT;
+		else if(index==1)
+			promotionPiece = PieceKind.BISHOP;
+		else if(index==2)
+			promotionPiece = PieceKind.ROOK;
+		else
+			promotionPiece = PieceKind.QUEEN;
+		
+		initBoardHandlers();
+		view.setPromotionGridVisible(false);
+		Move move = new Move(activePosition, promotionPos, promotionPiece);
+		stateChanger.makeMove(state, move);
+		blurBoard();
+		setState(state);
+		sendState(state);
+	}
+	public void squareClicked(int row, int col){
+		Position pos = new Position(row, col);
+		Piece piece = state.getPiece(pos);
+		
+		if(activePosition==null) {
+			//new move
+			if(piece==null)
+				//blank board was clicked
+				return;
+			else if (piece.getColor()!=state.getTurn())
+				//wrong color piece was clicked
+				return;
+			else if (piece.getColor()!=color)
+				//wrong color piece was clicked for current player
+				return;
+			else
+				highlightMoves(pos);
+		} 
+		else{
+			//move is active
+			if (piece!=null && piece.getColor()==state.getTurn()) {
+				//player choose a new piece to play (cancel move)
+				highlightMoves(pos);
+				blurBoard();
+			}
+			else{
+				//completing a move
+				PieceKind kind = state.getPiece(activePosition).getKind();
+				Set<Move> moves = stateExplorer.getPossibleMovesFromPosition(state, activePosition);
+				if (kind==PieceKind.PAWN && ((row==7 && state.getTurn()==Color.WHITE) || (row==0 && state.getTurn()==Color.BLACK))){
+					//needs promotion
+					Move move = new Move(activePosition, pos, PieceKind.QUEEN);
+					if (moves.contains(move)){
+						removeHandlers();
+						promotionPos = pos;
+						view.setPromotionGridVisible(true);
+					}
+				}
+				else{
+					//normal move
+					Move move = new Move(activePosition, pos, null);
+					if (moves.contains(move)) {
+						playSoundForMove(state, pos, move);
+						stateChanger.makeMove(state, move);
+						
+						MoveAnimation anim = new MoveAnimation(view.getImage(move.getFrom()), 
+								   							   view.getImage(move.getTo()));
+						anim.run(300);
+					}
+					blurBoard();
+				}
+			}
+		}
+	}
+	public void restartClicked(){
+		//restart button
+		state = new State();
+		this.setState(state);
+		sendState(state);
+	}
+	public void clearPlayersClicked(){
+		//clearPlayers button
+		chessServiceAsync.clearPlayers(new AsyncCallback<String>(){
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert("clearPlayers failure");
+			}
+
+			@Override
+			public void onSuccess(String result){	
+				restartClicked();
+			}
+		});
+	}
+	public void saveClicked(){
+		Storage storage = Storage.getLocalStorageIfSupported();
+		if (storage != null)
+		   storage.setItem("chessState", StateSerializer.dump(state));
+	}
+	public void loadClicked(){
+		Storage storage = Storage.getLocalStorageIfSupported();
+		if (storage != null) {
+			String value = storage.getItem("chessState");
+			if(value != null) {
+				state = StateSerializer.parse(value);
+				setState(state);
+			}
+		} 
+	}
+		
+	public void playSoundForMove(State state, Position toPos, Move move){		
+		if (state.getPiece(toPos)==null) {
+			audioController.playTrack("move");
+		} 
+		else {
+			audioController.playTrack("capture");
+		}
+	}
+	
+	class MoveAnimation extends Animation{
+		Image fromImage;
+		Image toImage;
+		double deltaY;
+		double deltaX;
+		int startX;
+		int startY;
+		public MoveAnimation(Image fromImage, Image toImage) {
+			//instantiates movement
+			this.fromImage = fromImage;
+			this.toImage = toImage;
+			startX=(int)fromImage.getAbsoluteLeft();
+			startY=(int)fromImage.getAbsoluteTop();
+			deltaX=(int)toImage.getAbsoluteLeft()-(int)fromImage.getAbsoluteLeft();
+			deltaY=(int)toImage.getAbsoluteTop()-(int)fromImage.getAbsoluteTop();
+			fromImage.getElement().getStyle().setProperty("position", "absolute");
+		}
+		
+		@Override
+		protected void onUpdate(double progress){
+			double newX=deltaX*progress;
+			double newY=deltaY*progress;
+			fromImage.getElement().getStyle().setLeft(startX+newX, Style.Unit.PX);
+	        fromImage.getElement().getStyle().setTop(startY+newY, Style.Unit.PX);
+		}
+		
+		@Override
+		protected void onComplete() {
+			fromImage.getElement().getStyle().setProperty("position", "static");
+
+			super.onComplete();
+			setState(state);
+			sendState(state);
+		}
+	}
+	
+	public void setPlayer(String email, int index){
+		view.setPlayer(email, index);
+	}
+
+	public void sendState(State state){
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				System.out.println("Send State failed");
+			}
+
+			@Override
+			public void onSuccess(String msg) {
+				System.out.println(msg);
+			}
+		};
+
+		chessServiceAsync.sendState(loginInfo.getEmailAddress(), StateSerializer.dump(state), callback);
+	}
+	
+}

@@ -1,0 +1,56 @@
+package org.sanjana.hw6.server;
+
+import org.sanjana.hw7.Match;
+import org.sanjana.hw7.Player;
+import org.sanjana.hw6.ChessService;
+import org.sanjana.hw6.StateManager;
+import org.shared.chess.Color;
+
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelService;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.googlecode.objectify.ObjectifyService;
+
+public class ChessServiceImpl extends RemoteServiceServlet implements ChessService
+{
+	private static final long serialVersionUID = 1L;
+
+//	static{
+//		ObjectifyService.register(Player.class);
+//		ObjectifyService.register(Match.class);
+//	}
+//	
+	//	void match()
+	//	{
+	//		String player1=waitingList.get(0);
+	//		String player2=waitingList.get(1);
+	//
+	//		GameDetails newGame = new GameDetails(player1,player2);
+	//		matchedPlayers.put(newGame.getGameId(),newGame);
+	//		
+	//		waitingList.remove(0);
+	//		waitingList.remove(0);
+	//	}
+
+	//	public static int getPlayerCount(){
+	//		return waitingList.size();
+	//	}
+
+	//	public static void addPlayer(String player){
+	//		waitingList.add(player);
+	////		match();
+	//	}
+
+	@Override
+	public void update(StateManager updateState)
+	{
+		int Id=updateState.getGameId();
+		String state=updateState.getState();
+		GameDetails game=MatchedPlayers.getmatchedPlayers(Id);
+		ChannelService channelService = ChannelServiceFactory.getChannelService();
+		String otherPlayer=(updateState.getTurn()==Color.WHITE) ? game.getPlayer1() : game.getPlayer2();
+		channelService.sendMessage(new ChannelMessage(otherPlayer, state));
+	}
+
+}

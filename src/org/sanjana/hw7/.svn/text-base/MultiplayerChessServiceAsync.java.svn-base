@@ -1,0 +1,19 @@
+package org.sanjana.hw7;
+
+import org.sanjana.hw6.LoginDetails;
+import org.sanjana.hw6.StateManager;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+@SuppressWarnings("rawtypes")
+public interface MultiplayerChessServiceAsync
+{
+	void removeMatch(Long matchID,AsyncCallback Async);
+	void sendMove(String matchID, String moveString,AsyncCallback Async);
+	void automatch(AsyncCallback Async);
+	void cancelAutoMatch(AsyncCallback Async);
+	void emailMatch(String email,AsyncCallback Async);
+	void loadAllMatches(LoginDetails user,AsyncCallback Async);
+	void getMatch(Long matchId,AsyncCallback Async);
+	void match(AsyncCallback<String> async);
+}

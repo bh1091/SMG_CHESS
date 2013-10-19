@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client
+END
+LoginServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/LoginServiceAsync.java
+END
+UpdateStateServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/UpdateStateServiceAsync.java
+END
+UpdateStateService.java
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/UpdateStateService.java
+END
+LoginService.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/LoginService.java
+END
+UpdateState.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/UpdateState.java
+END
+UserDetails.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/!svn/ver/774/trunk/eclipse/src/org/ashishmanral/hw6/client/UserDetails.java
+END

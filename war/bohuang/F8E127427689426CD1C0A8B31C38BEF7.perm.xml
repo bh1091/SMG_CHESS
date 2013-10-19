@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><permutation name="F8E127427689426CD1C0A8B31C38BEF7">
+<variables>
+<locale>zh</locale>
+<phonegap.env>no</phonegap.env>
+</variables>
+<files>
+<file>bohuang/gwt/clean/images/vborder.png</file>
+<file>bohuang/gwt/clean/images/corner_ie6.png</file>
+<file>bohuang/gwt/clean/images/circles.png</file>
+<file>bohuang/gwt/clean/images/thumb_vertical.png</file>
+<file>bohuang/gwt/clean/images/thumb_horz.png</file>
+<file>bohuang/gwt/clean/images/circles_ie6.png</file>
+<file>bohuang/gwt/clean/images/hborder.png</file>
+<file>bohuang/gwt/clean/images/hborder_ie6.png</file>
+<file>bohuang/compilation-mappings.txt</file>
+<file>bohuang/gwt/clean/images/vborder_ie6.png</file>
+<file>bohuang/bohuang.nocache.js</file>
+<file>bohuang/F8E127427689426CD1C0A8B31C38BEF7.cache.js</file>
+<file>bohuang/clear.cache.gif</file>
+<file>bohuang/gwt/clean/clean.css</file>
+<file>bohuang/bohuang.devmode.js</file>
+<file>bohuang/gwt/clean/clean_rtl.css</file>
+<file>bohuang/gwt/clean/images/corner.png</file>
+</files>
+</permutation>

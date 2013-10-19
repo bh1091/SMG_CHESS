@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/719/trunk/eclipse/war/WEB-INF/lib
+END
+objectify-4.0b1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/719/trunk/eclipse/war/WEB-INF/lib/objectify-4.0b1.jar
+END
+appengine-api-1.0-sdk-1.7.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/!svn/ver/665/trunk/eclipse/war/WEB-INF/lib/appengine-api-1.0-sdk-1.7.4.jar
+END
+gwt-servlet.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/662/trunk/eclipse/war/WEB-INF/lib/gwt-servlet.jar
+END

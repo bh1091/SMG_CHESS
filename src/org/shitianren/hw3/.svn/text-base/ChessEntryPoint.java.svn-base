@@ -1,0 +1,60 @@
+package org.shitianren.hw3;
+
+
+import org.shitianren.hw6.client.LoginService;
+import org.shitianren.hw6.client.LoginServiceAsync;
+import org.shitianren.hw6.client.LoginInfo;
+
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+public class ChessEntryPoint implements EntryPoint {
+	private LoginInfo userInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");	
+	
+	@Override
+	public void onModuleLoad() {
+		LoginServiceAsync loginService = GWT
+				.create(LoginService.class);
+		loginService.login(Window.Location.getHref(),
+				new AsyncCallback<LoginInfo>() {
+					public void onFailure(Throwable error) {}
+					public void onSuccess(LoginInfo result) {
+						userInfo = result;
+						if (userInfo.isLoggedIn()) {
+							loadChessGame();
+						} else {
+							loadLoginPanel();
+						}
+					}
+				});
+	}
+
+	public void loadChessGame() {
+		final Graphics graphics = new Graphics();
+		Presenter presenter = new Presenter();
+		presenter.setView(graphics);
+		presenter.initialize();
+		signOutLink.setHref(userInfo.getLogoutUrl());
+		RootPanel.get().add(new Label("Hello, "+userInfo.getNickname()+" Welcome to Chess Game!"));
+		RootPanel.get().add(new Label("You can sign out here."));
+		RootPanel.get().add(signOutLink);
+		RootPanel.get().add(graphics);
+	}
+	
+	public void loadLoginPanel(){
+		
+		signInLink.setHref(userInfo.getLoginUrl());
+		loginPanel.add(new Label("Please sign in your Google Account to play Chess Game: "));
+		loginPanel.add(signInLink);
+		RootPanel.get().add(loginPanel);
+	}
+}

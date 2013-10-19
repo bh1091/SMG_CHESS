@@ -1,0 +1,10 @@
+K 10
+svn:ignore
+V 64
+.settings
+gwt-unitCache
+test-classes
+come2play-chess.zip
+extras
+
+END

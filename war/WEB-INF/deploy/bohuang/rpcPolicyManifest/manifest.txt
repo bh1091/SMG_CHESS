@@ -1,0 +1,4 @@
+# Module bohuang
+# RPC service class, partial path of RPC policy file
+org.bohuang.hw6.client.ChessService, 9C1E25D9C4E6B753FA8CA3C39B1E755E.gwt.rpc
+com.googlecode.gwtphonegap.client.log.shared.PhoneGapLogService, FB56D559FDF66785F6766264F858D14F.gwt.rpc

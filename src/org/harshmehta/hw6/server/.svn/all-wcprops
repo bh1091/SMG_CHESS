@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/724/trunk/eclipse/src/org/harshmehta/hw6/server
+END
+MessageServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svn/!svn/ver/724/trunk/eclipse/src/org/harshmehta/hw6/server/MessageServiceImpl.java
+END
+LoginServiceImpl.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/685/trunk/eclipse/src/org/harshmehta/hw6/server/LoginServiceImpl.java
+END
+ChessServer.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/724/trunk/eclipse/src/org/harshmehta/hw6/server/ChessServer.java
+END
+Game.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/685/trunk/eclipse/src/org/harshmehta/hw6/server/Game.java
+END

@@ -1,0 +1,163 @@
+package org.mengyanhuang.hw3;
+
+import java.util.LinkedList;
+
+import org.mengyanhuang.hw3.Presenter;
+import org.mengyanhuang.hw6.client.LoginInfo;
+import org.mengyanhuang.hw6.client.UserLoginService;
+import org.mengyanhuang.hw6.client.UserLoginServiceAsync;
+import org.mengyanhuang.hw7.Match;
+import org.shared.chess.Color;
+import org.shared.chess.State;
+
+import com.google.gwt.appengine.channel.client.ChannelError;
+import com.google.gwt.appengine.channel.client.ChannelFactoryImpl;
+import com.google.gwt.appengine.channel.client.Socket;
+import com.google.gwt.appengine.channel.client.SocketListener;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+public class ChessEntryPoint implements EntryPoint {
+
+	public static LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");
+	private Label loginLabel = new Label(
+			"Please sign-in to your Google Account to access the Chess Game.");
+	private final UserLoginServiceAsync loginService = GWT.create(UserLoginService.class);
+
+	@Override
+	public void onModuleLoad() {
+		// Check login status using login service.
+		//final UserLoginServiceAsync loginService = GWT.create(UserLoginService.class);
+
+		AsyncCallback<LoginInfo> callback = new AsyncCallback<LoginInfo>() {
+					public void onFailure(Throwable error) {
+						Window.alert("Login Failure");
+					}
+
+					public void onSuccess(LoginInfo result) {
+						loginInfo = result;
+						if (loginInfo.isLoggedIn()) {	
+							//Window.alert("Login Succeed! "+ loginInfo.getEmailAddress()+ loginInfo.getToken());
+							loadGameUI();
+						} else {
+							loadLoginUI();
+						}
+					}
+				};
+		loginService.login(GWT.getHostPageBaseURL() + "mengyanhuang.html", callback);
+
+	}
+
+	private void loadLoginUI() {
+		signInLink.setHref(loginInfo.getLoginUrl());
+		loginPanel.add(signInLink);
+		loginPanel.add(loginLabel);
+		RootPanel.get().add(loginPanel);
+	}
+
+	private void loadGameUI() {
+		final Graphics graphics = new Graphics();
+		final Presenter presenter = new Presenter();
+		State state = new State();
+
+		presenter.setView(graphics);
+		presenter.setState(state);
+		presenter.setUserId(loginInfo.getEmailAddress());
+        //presenter.setUserColor(loginInfo.getUserColor());
+	
+		signOutLink.setHref(loginInfo.getLogoutUrl());
+		RootPanel.get().add(
+				new Label("Hello, " + loginInfo.getNickname()));
+		RootPanel.get().add(signOutLink);
+		RootPanel.get().add(graphics);
+
+		Socket socket = new ChannelFactoryImpl().createChannel(
+				loginInfo.getToken()).open(new SocketListener() {
+			
+			@Override
+			public void onOpen() {
+				Window.alert("Channel opened!");
+				graphics.setGameStatus("Waiting for an opponent...");
+				
+				AsyncCallback<LinkedList<Match>> callback =new AsyncCallback<LinkedList<Match>>(){
+				    public void onSuccess(LinkedList<Match> result) {
+				    	    //Window.alert("Load Match List Succeed!");
+						    for(Match match:result){
+						    	if(match.getBlack() == loginInfo.getEmailAddress()) 
+						    		graphics.addtoListBox(match.getWhite()+" "+match.getMatchid());
+						    	else if(match.getWhite() == loginInfo.getEmailAddress()) 
+						    		graphics.addtoListBox(match.getBlack()+" "+match.getMatchid());
+						     }
+						    }
+
+						    public void onFailure(Throwable caught) {
+						     Window.alert("Load Match List Fails");
+						    }
+						};
+		    	 loginService.LoadGame(loginInfo.getEmailAddress(), callback);
+		    	 
+			}
+
+			@Override
+			public void onMessage(String message) {
+				//Window.alert("Received: " + message);
+				String[] temp = message.split("#");
+				if(temp[0]=="begin"){
+					//Window.alert(message);
+					if(temp[1].equals("white")) loginInfo.setUserColor(Color.WHITE);
+					else loginInfo.setUserColor(Color.BLACK);
+					
+					presenter.setUserColor(loginInfo.getUserColor());
+					State state = new State();
+					presenter.setState(state);
+					if(loginInfo.getUserColor() == Color.WHITE)
+						graphics.setGameStatus("Your turn is "+temp[1]+". Now it's your turn!");
+					else graphics.setGameStatus("Your turn is "+temp[1]+". It's ("+temp[2]+")'s turn.");
+					presenter.setId(Long.valueOf(temp[3]).longValue());
+					
+					//RootPanel.get().add(new Label("Your turn is " + loginInfo.getUserColor().toString() + "1 !"));
+					graphics.addtoListBox(temp[2]+" "+temp[3]);
+					Graphics.gameGrid.setVisible(true);
+				}else if(temp[0]=="makemove") {
+					//Window.alert(message);
+					//if(temp[3].equals("white")) loginInfo.setUserColor(Color.WHITE);
+					//else loginInfo.setUserColor(Color.BLACK);
+					
+					//presenter.setUserColor(loginInfo.getUserColor());
+					State state= Presenter.deserialize(temp[1]);
+					presenter.setCurrentState(state);
+					presenter.setState(state);
+					Graphics.gameGrid.setVisible(true);
+					
+					if(state.getGameResult()==null)  graphics.setGameStatus("Your turn is "
+					+Presenter.userColor.toString()+".It's ("+temp[2]+") "+temp[3]+"'s turn."+"Match ID is: "+temp[4]);
+				}
+			}
+
+			@Override
+			public void onError(ChannelError error) {
+				Window.alert("Channel error: " + error.getCode() + " : "
+						+ error.getDescription());
+			}
+
+			@Override
+			public void onClose() {
+				Window.alert("Channel closed!");
+			}
+		});
+
+		
+		//RootPanel.get().add(new Label("Your turn is " + loginInfo.getUserColor().toString() + "2 !"));
+		// socket.close();
+	}
+
+}

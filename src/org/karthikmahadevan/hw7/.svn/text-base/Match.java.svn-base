@@ -1,0 +1,43 @@
+package org.karthikmahadevan.hw7;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+
+@Entity
+public class Match {
+	@Id
+	Long matchID;
+	String white;
+	String black;
+	String state;
+
+	public Match() {
+	}
+
+	public Match(String player1, String player2) {
+		this.white = player1;
+		this.black = player2;
+		state = "";
+	}
+
+	public Long getMatchID() {
+		return matchID;
+	}
+
+	public String getWhite() {
+		return white;
+	}
+
+	public String getBlack() {
+		return black;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+}

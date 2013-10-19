@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9
+END
+Heuristic.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9/Heuristic.java
+END
+AlphaBetaPruning.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9/AlphaBetaPruning.java
+END
+AIPlayer.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9/AIPlayer.java
+END
+DateTimer.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9/DateTimer.java
+END
+Timer.java
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/965/trunk/eclipse/src/org/kanwang/hw9/Timer.java
+END

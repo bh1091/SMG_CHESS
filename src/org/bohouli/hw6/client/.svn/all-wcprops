@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/996/trunk/eclipse/src/org/bohouli/hw6/client
+END
+BohouChessConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/!svn/ver/933/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessConstants.java
+END
+BohouChessConstants_zh.properties
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/!svn/ver/933/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessConstants_zh.properties
+END
+BohouChessMessages.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/933/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessMessages.java
+END
+BohouChessServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/996/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessServiceAsync.java
+END
+BohouChessService.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/996/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessService.java
+END
+BohouChessMessages_zh.properties
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/915/trunk/eclipse/src/org/bohouli/hw6/client/BohouChessMessages_zh.properties
+END

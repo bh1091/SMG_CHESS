@@ -1,0 +1,446 @@
+package org.karthikmahadevan.hw3;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import java_cup.internal_error;
+
+import org.karthikmahadevan.hw2.StateChangerImpl;
+import org.karthikmahadevan.hw2_5.StateExplorerImpl;
+import org.karthikmahadevan.hw6.client.GameService;
+import org.karthikmahadevan.hw6.client.GameServiceAsync;
+import org.karthikmahadevan.hw7.MatchInfo;
+import org.karthikmahadevan.hw7.MatchInfoParser;
+
+import org.shared.chess.Color;
+import org.shared.chess.GameResult;
+import org.shared.chess.Piece;
+import org.shared.chess.PieceKind;
+import org.shared.chess.State;
+import org.shared.chess.Position;
+import org.shared.chess.Move;
+
+import com.google.gwt.appengine.channel.client.Channel;
+import com.google.gwt.appengine.channel.client.ChannelError;
+import com.google.gwt.appengine.channel.client.ChannelFactoryImpl;
+import com.google.gwt.appengine.channel.client.SocketListener;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Image;
+
+import com.google.gwt.appengine.channel.client.Socket;
+
+public class Presenter {
+	public interface View {
+		/**
+		 * Renders the piece at this position. If piece is null then the
+		 * position is empty.
+		 */
+		void setPiece(int row, int col, Piece piece);
+
+		/**
+		 * Turns the highlighting on or off at this cell. Cells that can be
+		 * clicked should be highlighted.
+		 */
+		void setHighlighted(int row, int col, boolean highlighted);
+
+		/**
+		 * Indicate whose turn it is.
+		 */
+		void setWhoseTurn(Color color);
+
+		/**
+		 * Indicate whether the game is in progress or over.
+		 */
+		void setGameResult(GameResult gameResult);
+
+		/**
+		 * Make promotion options available
+		 */
+		void makePromotionOptionsAvailable(boolean available);
+
+		/**
+		 * Returns its presenter object
+		 */
+		Presenter getPresenter();
+
+		/**
+		 * Passes the previous state to be added to history
+		 */
+		void addToHistory(String state);
+
+		/**
+		 * Removes all draghandlers
+		 */
+		void clearDragHandlers();
+
+		Image[][] getBoard();
+
+		ImageResource getImageResource(int row, int col, Piece piece);
+
+		void setYourColor(Color white);
+
+		void loadMatches(List<Long> matches);
+
+		String getSelectedMatch();
+
+		void setOpponent(String opponent);
+
+		void setLoggedInAs(String user);
+
+		void clearGameStatus();
+
+	}
+
+	private View view;
+	private final StateChangerImpl stateChanger;
+	private final StateExplorerImpl stateExplorer;
+	private Position selectedPosition = null;
+	private PieceKind promoteToPiece = null;
+	private List<Position> validPositionsAfterSelectingPieceToPromote = null;
+	private List<Position> highlightedPositions = new ArrayList<Position>();
+	private GameServiceAsync gameSvc = GWT.create(GameService.class);
+	private String clientID;
+	private String token = null;
+	private Channel channel;
+	private Socket socket;
+	private SocketListener socketListener;
+	private Color myColor = Color.BLACK;
+	private HashMap<String, MatchInfo> hshMatchInfo;
+
+	public Presenter(View viewObj) {
+		this.view = viewObj;
+		stateChanger = new StateChangerImpl();
+		stateExplorer = new StateExplorerImpl();
+		hshMatchInfo = new HashMap<String, MatchInfo>();
+		view.makePromotionOptionsAvailable(false);
+
+		addNewConnection();
+		getCurrentUserEmail();
+		// clientID = String.valueOf((long) (Math.random()*(double)10000));
+		// setUpCommunication();
+	}
+
+	/*
+	 * public String getUser() {
+	 * 
+	 * }
+	 */
+
+	private void getCurrentUserEmail() {
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured in getCurrentUserEmail()");
+			}
+
+			public void onSuccess(String email) {
+				view.setLoggedInAs(email);
+			}
+		};
+		gameSvc.getCurrentUserEmail(callback);
+	}
+
+	public void addNewConnection() {
+		if (gameSvc == null) {
+			gameSvc = GWT.create(GameService.class);
+		}
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured in addUserIfNew()");
+			}
+
+			public void onSuccess(String newToken) {
+				token = newToken;
+				openSocket();
+				loadMatches();
+				onMatchChange("");
+			}
+		};
+		gameSvc.addNewConnection(callback);
+	}
+
+	private void loadMatches() {
+		AsyncCallback<List<Long>> callback = new AsyncCallback<List<Long>>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured in getMatches()");
+			}
+
+			public void onSuccess(List<Long> matchIDs) {
+				view.loadMatches(matchIDs);
+				for (int i = 0; i < matchIDs.size(); ++i) {
+					getMatchInfo(matchIDs.get(i));
+				}
+				/*
+				 * if (hshMatchInfo.size() > 0) { String selectedMatch =
+				 * view.getSelectedMatch(); if (!selectedMatch.equals("")) {
+				 * onMatchChange(selectedMatch); } }
+				 */
+			}
+		};
+		gameSvc.getMatches(callback);
+	}
+
+	private void getMatchInfo(final Long matchID) {
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured in getMatchInfo()");
+			}
+
+			public void onSuccess(String strMatch) {
+				MatchInfoParser matchParser = new MatchInfoParser(strMatch);
+				MatchInfo matchInfo = matchParser.getMatchInfo();
+				hshMatchInfo.put(matchInfo.getMatchID(), matchInfo);
+			}
+		};
+		gameSvc.getMatchInfo(matchID, callback);
+	}
+
+	public void autoMatchWithOpponent() {
+		AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured looking for a match!");
+			}
+
+			public void onSuccess(Void v) {
+				Window.alert("Auto-match request posted successfully");
+			}
+		};
+		gameSvc.getOpponentThroughAutoMatch(callback);
+	}
+
+	public void openSocket() {
+		ChannelFactoryImpl channelFactoryImpl = new ChannelFactoryImpl();
+		channel = channelFactoryImpl.createChannel(token);
+		socketListener = (new SocketListener() {
+			@Override
+			public void onOpen() {
+				// Window.alert("Channel opened");
+			}
+
+			@Override
+			public void onMessage(String message) {
+				if (message.contains("~")) {
+					// Window.alert(message);
+					MatchInfoParser matchInfoParser = new MatchInfoParser(
+							message);
+					MatchInfo match = matchInfoParser.getMatchInfo();
+					// match.setMatchState(new State());
+					/* hshMatchInfo.put(match.getMatchID(), match); */
+					loadMatches();
+					Window.alert("A new match (" + match.getMatchID()
+							+ ") has been added!");
+				} else {
+					restoreState(message);
+				}
+			}
+
+			@Override
+			public void onError(ChannelError error) {
+				Window.alert("Channel error: " + error.getCode() + " : "
+						+ error.getDescription());
+			}
+
+			@Override
+			public void onClose() {
+				Window.alert("Channel closed!");
+			}
+		});
+		socket = channel.open(socketListener);
+	}
+
+	public void clickedOn(int row, int col) {
+		String matchID = view.getSelectedMatch();
+		if (matchID.equals(""))
+			return;
+		MatchInfo match = hshMatchInfo.get(matchID);
+		State state = match.getMatchState();
+		Position clickedPosition = new Position(row, col);
+		if (selectedPosition != null) {
+			if (highlightedPositions.contains(clickedPosition)) {
+				Move nextMove = new Move(selectedPosition, clickedPosition,
+						promoteToPiece);
+				stateChanger.changeState(state, nextMove);
+
+				AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						Window.alert("Failure updating state");
+					}
+
+					public void onSuccess(Void v) {
+						// Window.alert("Updated state successfully");
+					}
+				};
+
+				// gameSvc.updateState(clientID, state.toString(), callback);
+				gameSvc.updateMove(Long.parseLong(matchID), state.toString(),
+						callback);
+				// view.addToHistory(state.toString());
+				setState(state);
+
+				Piece piece = state.getPiece(selectedPosition);
+				ImageResource imgRes = view.getImageResource(row, col, piece);
+				MoveAnimation moveAnimation = new MoveAnimation(
+						selectedPosition.getRow(), selectedPosition.getCol(),
+						row, col, imgRes, view.getBoard());
+				moveAnimation.run(5000);
+			}
+			selectedPosition = null;
+			for (int i = 0; i < highlightedPositions.size(); ++i) {
+				Position highlightedPosition = highlightedPositions.get(i);
+				view.setHighlighted(highlightedPosition.getRow(),
+						highlightedPosition.getCol(), false);
+			}
+			view.clearDragHandlers();
+			highlightedPositions = new ArrayList<Position>();
+			view.makePromotionOptionsAvailable(false);
+			promoteToPiece = null;
+		} else {
+			Piece clickedPiece = state.getPiece(clickedPosition);
+			Color color = clickedPiece.getColor();
+			if (clickedPiece != null && myColor == state.getTurn()
+					&& color == state.getTurn()) {
+				boolean isPromotion = false;
+				selectedPosition = clickedPosition;
+				Set<Move> possibleMoves = stateExplorer
+						.getPossibleMovesFromPosition(state, selectedPosition);
+				Iterator<Move> it = possibleMoves.iterator();
+				while (it.hasNext()) {
+					Move move = it.next();
+					Position toPosition = move.getTo();
+					highlightedPositions.add(toPosition);
+					if (move.getPromoteToPiece() != null) {
+						isPromotion = true;
+						continue;
+					}
+					view.setHighlighted(toPosition.getRow(),
+							toPosition.getCol(), true);
+				}
+				if (isPromotion) {
+					validPositionsAfterSelectingPieceToPromote = highlightedPositions;
+					highlightedPositions = new ArrayList<Position>();
+					view.makePromotionOptionsAvailable(true);
+				}
+			}
+		}
+	}
+
+	public void onMatchChange(String matchID) {
+		if (matchID.equals("")) {
+			setState(null);
+			view.setYourColor(null);
+			view.setOpponent("");
+			view.clearGameStatus();
+		} else {
+			MatchInfo matchInfo = hshMatchInfo.get(matchID);
+			setState(matchInfo.getMatchState());
+			view.setYourColor(matchInfo.getMyColor());
+			myColor = matchInfo.getMyColor();
+			view.setOpponent(matchInfo.getOpponent());
+		}
+	}
+
+	public void setState(State state) {
+		if (state == null) {
+			view.setWhoseTurn(null);
+			for (int r = 0; r < 8; r++) {
+				for (int c = 0; c < 8; c++) {
+					view.setPiece(r, c, null);
+				}
+			}
+			view.setGameResult(null);
+		} else {
+			view.setWhoseTurn(state.getTurn());
+			for (int r = 0; r < 8; r++) {
+				for (int c = 0; c < 8; c++) {
+					view.setPiece(r, c, state.getPiece(r, c));
+				}
+			}
+			GameResult result = state.getGameResult();
+			view.setGameResult(result);
+		}
+	}
+
+	public void promoteToPiece(int colPromotionGrid) {
+		promoteToPiece = PieceKind.values()[colPromotionGrid + 1];
+		if (validPositionsAfterSelectingPieceToPromote != null) {
+			highlightedPositions = validPositionsAfterSelectingPieceToPromote;
+			validPositionsAfterSelectingPieceToPromote = null;
+			for (int i = 0; i < highlightedPositions.size(); ++i) {
+				int row = highlightedPositions.get(i).getRow();
+				int col = highlightedPositions.get(i).getCol();
+				view.setHighlighted(row, col, true);
+			}
+		}
+	}
+
+	public void restoreState(String strState) {
+		if (strState == null || strState.isEmpty()) {
+			return;
+		} else {
+			int matchIDIndex = strState.indexOf("MatchID") + 8; // +8 is to
+																// offset the
+																// length of
+																// "MatchID="
+			String matchID = strState.substring(matchIDIndex);
+			// matchID = matchID.substring(0, matchID.length() - 1); //to trim
+			// the trailing '\n'
+			StateParser parser = new StateParser(strState);
+			State state = parser.getState();
+
+			String selectedMatch = view.getSelectedMatch();
+			if (matchID.equals(selectedMatch)) {
+				// if the state was changed from this channel, the state would
+				// already have been changed
+				if (!state.equals(hshMatchInfo.get(selectedMatch)
+						.getMatchState())) {
+					setState(state);
+				}
+			} else {
+				Window.alert("The state of the match " + matchID
+						+ " has changed!");
+			}
+
+			MatchInfo match = hshMatchInfo.get(matchID);
+			match.setMatchState(state);
+		}
+	}
+
+	public void deleteMatch(String matchID) {
+		AsyncCallback<Void> callback = new AsyncCallback<Void>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured deleting the match");
+			}
+
+			public void onSuccess(Void v) {
+				loadMatches();
+				onMatchChange("");
+				Window.alert("Match deleted successfully");
+			}
+		};
+		gameSvc.deleteMatch(Long.parseLong(matchID), callback);
+	}
+
+	public void playWith(String opponent) {
+		AsyncCallback<String> callback = new AsyncCallback<String>() {
+			public void onFailure(Throwable caught) {
+				Window.alert("An error occured in playWith()");
+			}
+
+			public void onSuccess(String status) {
+				Window.alert(status);
+			}
+		};
+		gameSvc.playWith(opponent, callback);
+	}
+
+	public void loadSelectedMatch() {
+		String matchID = view.getSelectedMatch();
+		onMatchChange(matchID);
+	}
+}

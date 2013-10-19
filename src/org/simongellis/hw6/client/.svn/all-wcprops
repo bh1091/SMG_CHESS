@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw6/client
+END
+MatchmakingPopup.java
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/!svn/ver/949/trunk/eclipse/src/org/simongellis/hw6/client/MatchmakingPopup.java
+END
+MultiplayerService.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw6/client/MultiplayerService.java
+END
+MatchmakingPopup.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/949/trunk/eclipse/src/org/simongellis/hw6/client/MatchmakingPopup.ui.xml
+END
+MultiplayerServiceAsync.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw6/client/MultiplayerServiceAsync.java
+END

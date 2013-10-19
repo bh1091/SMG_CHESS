@@ -1,0 +1,137 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw3
+END
+Graphics.ui.xml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw3/Graphics.ui.xml
+END
+black_pawn.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_pawn.png
+END
+blank_square.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/blank_square.png
+END
+Graphics.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw3/Graphics.java
+END
+black_queen.png
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_queen.png
+END
+GameImages.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/GameImages.java
+END
+Presenter.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/949/trunk/eclipse/src/org/simongellis/hw3/Presenter.java
+END
+black_knight.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_knight.png
+END
+white_king.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_king.png
+END
+background.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/910/trunk/eclipse/src/org/simongellis/hw3/background.png
+END
+white_rook.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_rook.png
+END
+white_bishop.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_bishop.png
+END
+white_queen.png
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_queen.png
+END
+ChessEntryPoint.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/995/trunk/eclipse/src/org/simongellis/hw3/ChessEntryPoint.java
+END
+dark_tile.png
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/dark_tile.png
+END
+black_king.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_king.png
+END
+light_tile.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/light_tile.png
+END
+black_rook.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_rook.png
+END
+black_bishop.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/black_bishop.png
+END
+white_pawn.png
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_pawn.png
+END
+white_knight.png
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/white_knight.png
+END
+GameCss.java
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/529/trunk/eclipse/src/org/simongellis/hw3/GameCss.java
+END

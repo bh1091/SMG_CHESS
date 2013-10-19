@@ -1,0 +1,29 @@
+CACHE MANIFEST
+# Unique id #1367385653122.0.9796094209558379
+
+CACHE:
+# Static app files
+
+# GWT compiled files
+bohuang/gwt/clean/images/vborder.png
+bohuang/1D3A9169F2041A166865CE72EDEBC9C6.cache.js
+bohuang/gwt/clean/images/corner_ie6.png
+bohuang/gwt/clean/images/circles.png
+bohuang/gwt/clean/images/thumb_horz.png
+bohuang/gwt/clean/images/thumb_vertical.png
+bohuang/gwt/clean/images/circles_ie6.png
+bohuang/gwt/clean/images/hborder.png
+bohuang/gwt/clean/images/hborder_ie6.png
+bohuang/compilation-mappings.txt
+bohuang/bohuang.nocache.js
+bohuang/gwt/clean/images/vborder_ie6.png
+bohuang/clear.cache.gif
+bohuang/gwt/clean/clean.css
+bohuang/bohuang.devmode.js
+bohuang/gwt/clean/images/corner.png
+bohuang/gwt/clean/clean_rtl.css
+
+
+# All other resources require the client to be online.
+NETWORK:
+*

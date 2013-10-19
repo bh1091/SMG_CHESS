@@ -1,0 +1,277 @@
+package org.wenjiechen.hw6.server;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.shared.chess.Color;
+import org.wenjiechen.hw3.HistoryCoder;
+import org.wenjiechen.hw6.client.ChessGameService;
+import org.wenjiechen.hw7.client.Match;
+import org.wenjiechen.hw7.client.Player;
+
+import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.appengine.api.channel.ChannelMessage;
+import com.google.appengine.api.channel.ChannelService;
+import com.google.appengine.api.channel.ChannelServiceFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.ObjectifyService;
+
+import static com.googlecode.objectify.ObjectifyService.ofy;
+
+//@SuppressWarnings("serial")
+public class ChessGameServiceImpl extends RemoteServiceServlet implements
+			ChessGameService {
+	
+	private static final long serialVersionUID = -11048566576274207L;
+
+	static {
+		ObjectifyService.register(Player.class);
+		ObjectifyService.register(Match.class);
+	}
+	
+	UserService userService = UserServiceFactory.getUserService();
+	ChannelService channelService = ChannelServiceFactory.getChannelService();
+	HistoryCoder serializer = new HistoryCoder();
+
+	private static Set<User> usersWaitingList = new LinkedHashSet<User>();
+	private static Map<User,User> matchedUsers = new HashMap<User,User>();
+	private static Map<User,String> userMapsClientId = new HashMap<User,String>();
+	
+	/**
+	 * generate a unique token for each logged in user and client use this token open a socketListerner
+	 * getuserId returns a long integer
+	 * getNickname returns user email
+	 */
+	@Override
+	public String creatChannelForLoggedInUser(){
+		if(userService.isUserLoggedIn() == true){
+			User user = userService.getCurrentUser();
+			Player player = ofy().load().key(Key.create(Player.class,user.getEmail())).get();
+			
+			if(player == null){
+				player = new Player(user.getEmail(), user.getNickname().substring(0, user.getNickname().indexOf("@")));
+				ofy().save().entity(player);
+			}
+			
+			String channelId = user.getEmail() + "_" + String.valueOf(player.getChannelsNum()+1);
+			String token = channelService.createChannel(channelId);
+			String playerInfo = "name=" + player.getName() + "=email=" + player.getEmail();
+//			userMapsClientId.put(user, channelId);
+			String result = token + ">"+playerInfo;
+			return result;
+		}
+		return null;		
+	}
+	
+	@Override
+	public void getLoginPlayerInfo() {
+		if (userService.isUserLoggedIn() == true) {
+			System.out.println("getloginplayerinfo()");
+			User user = userService.getCurrentUser();
+			Player player = ofy().load()
+					.key(Key.create(Player.class, user.getEmail())).get();
+			for (String c : player.getAllChannels()) {
+				channelService.sendMessage(new ChannelMessage(c,
+						"currentPlayerMes>name=" + player.getName() + "email="
+								+ player.getEmail()));
+			}
+		}
+	}
+
+	/**
+	 * @param redirectURL where when after log out redirect to.
+	 * @return
+	 */
+	@Override
+	public String LogOutLinkGenerator(String redirectURL){
+		String link = null;
+		if(userService.isUserLoggedIn()){
+			link =userService.createLogoutURL(redirectURL);
+		}
+		return link;
+	}
+	
+	@Override
+	public String LogInLinkGenerator(String redirectURL){
+		String link = null;
+		if(userService.isUserLoggedIn()){
+			link = userService.createLoginURL(redirectURL);
+		}
+		return link;
+	}
+	
+	@Override
+	public String fetchMatchList() {
+		String matchList = "";
+		if (userService.isUserLoggedIn()) {
+			User user = userService.getCurrentUser();
+			Key<Player> curPlayerKey = Key
+					.create(Player.class, user.getEmail());
+			Player player = ofy().load().key(curPlayerKey).get();
+
+			if (player.isMatchEmpty() == false) {
+				for (Match match : ofy().load().keys(player.getAllMatches())
+						.values()) {
+					// System.out.println("fetchMatchList(): matchId = " +
+					// match.getMatchId() +
+					// match.getBlackPlayer()+match.getWhitePlayer());
+					Player opponent = ofy().load()
+							.key(match.getOtherPlayer(curPlayerKey)).get();
+					matchList += "matchId=" + match.getMatchId().toString();
+					if (match.getColor(curPlayerKey) == Color.WHITE) {
+						matchList += ";color=white";
+					} else {
+						matchList += ";color=black";
+					}
+					matchList += ";opponentName=" + opponent.getName();
+					matchList += ";opponentEmail=" + opponent.getEmail();
+					matchList += ";state=" + match.getState();
+					// array segment note
+					matchList += "#";
+				}
+				// System.out.println("returned matchlist :"+ matchList);
+			}
+			return matchList;
+		}
+		return matchList;
+	}
+	
+	public void emailMatch(String email){
+		if (userService.isUserLoggedIn()) {
+			User user = userService.getCurrentUser();
+			Key<Player> curplayerKey = Key.create(Player.class, user.getEmail());
+			Player curplayer = ofy().load().key(curplayerKey).get();
+			Key<Player> opponentPlayerKey = Key.create(Player.class, email);
+			Player opponentPlayer = ofy().load().key(opponentPlayerKey).get();
+			if (opponentPlayer == null) {
+				opponentPlayer = new Player(email, email.substring(0, email.indexOf("@")));
+				ofy().save().entity(opponentPlayer).now();			
+			}
+
+			Match match = new Match(curplayerKey, opponentPlayerKey, "newgame");
+			Key<Match> matchKey = ofy().save().entity(match).now();
+			System.out.println("emailMatch() matchId :" + match.getMatchId());
+			curplayer.addMatch(matchKey);
+			opponentPlayer.addMatch(matchKey);
+
+			ofy().save().entities(curplayer, opponentPlayer);
+			String message = "newEmailMatch>" + "matchId=" + match.getMatchId() + ";color=white" + ";opponentName=" 
+								+ opponentPlayer.getName() + ";opponentEmail=" + opponentPlayer.getEmail();
+			for (String channel : curplayer.getAllChannels()) {
+				channelService.sendMessage(new ChannelMessage(channel, message));
+			}
+			message = "newEmailMatch>"+ "matchId=" + match.getMatchId() + ";color=black" + ";opponentName=" 
+								+ curplayer.getName() + ";opponentEmail=" + curplayer.getEmail();
+			for (String channel : opponentPlayer.getAllChannels()) {
+				channelService.sendMessage(new ChannelMessage(channel, message));
+			}
+		}		
+	}
+	
+	@Override
+	public void deleteCurrentUser(){
+		if (userService.isUserLoggedIn()) {
+			User currentUser = userService.getCurrentUser();
+			if (matchedUsers.containsKey(currentUser)) {
+				User rivalUser = matchedUsers.get(currentUser);
+				matchedUsers.remove(currentUser);
+				matchedUsers.remove(rivalUser);
+				usersWaitingList.add(currentUser);
+				usersWaitingList.add(rivalUser);
+				channelService.sendMessage(new ChannelMessage(rivalUser.getEmail()+ String.valueOf(1),"lost opponent"));
+				channelService.sendMessage(new ChannelMessage(currentUser.getEmail()+ String.valueOf(1),"lost opponent"));
+//				System.out.println("deleteCurrentUser()");
+			}
+		}		
+	}
+	
+	@Override
+	public void removeUserFromWaitinglist(){
+		if(userService.isUserLoggedIn()){
+			User currentUser = userService.getCurrentUser();
+			if (matchedUsers.containsKey(currentUser)) {
+				User rivalUser = matchedUsers.get(currentUser);
+				matchedUsers.remove(currentUser);
+				matchedUsers.remove(rivalUser);
+				usersWaitingList.add(rivalUser);
+			}
+				usersWaitingList.remove(currentUser);
+		}		
+	}
+	
+	private void deleteClientId(User user){
+		if(userMapsClientId.containsKey(user)){
+			userMapsClientId.remove(user);
+		}
+	}
+
+	@Override
+	public void sendMove(String move){
+		if (userService.isUserLoggedIn()) {
+			User currentUser = userService.getCurrentUser();
+			if (matchedUsers.containsKey(currentUser)) {
+				User rivalUser = matchedUsers.get(currentUser);
+				channelService.sendMessage(new ChannelMessage(rivalUser.getEmail()+ String.valueOf(1), "move="+move));
+				channelService.sendMessage(new ChannelMessage(currentUser.getEmail()+ String.valueOf(1), "move="+move));
+			}
+		}		
+	}
+	
+	@Override
+	public void matchUsers(){
+		if(userService.isUserLoggedIn() == true){
+			User curUser = userService.getCurrentUser();
+			if(matchedUsers.containsKey(curUser)){
+				User opponent = matchedUsers.get(curUser);
+				matchedUsers.remove(curUser);
+				matchedUsers.remove(opponent);
+				usersWaitingList.add(curUser);
+				usersWaitingList.add(opponent);
+//				System.out.println("add user in waitingUsers: " + curUser.getNickname());
+//				System.out.println("add opponent in waitingUsers: " + opponent.getNickname());
+//				deleteCurrentUser();
+			}
+			if(!usersWaitingList.isEmpty()){
+				User opponent = null;
+				for(User w: usersWaitingList){
+					if(!w.equals(curUser)){
+						opponent = w;
+						usersWaitingList.remove(w);
+						usersWaitingList.remove(curUser);
+						break;
+					}					
+				}
+				if(opponent == null){
+					channelService.sendMessage(new ChannelMessage(curUser.getEmail()+ String.valueOf(1),"match=faild"));	
+					return;
+				}
+				matchedUsers.put(curUser, opponent);
+				matchedUsers.put(opponent, curUser);
+				channelService.sendMessage(new ChannelMessage(curUser.getEmail()+ String.valueOf(1), "player=" + "white=" + curUser.getNickname() 
+																					+"=black="+opponent.getNickname()));
+				channelService.sendMessage(new ChannelMessage(opponent.getEmail()+ String.valueOf(1), "player=" + "black=" + opponent.getNickname()
+																					+"=white="+curUser.getNickname()));
+//				System.out.println("matchUsers() current user: " + curUser);
+//				System.out.println("matchUsers() opponent user: " + opponent);
+//				System.out.println("sendMessage: "+ opponent.getEmail() + "player=" + "black=" + opponent.getNickname());
+//				System.out.println("sendMessage: "+ curUser.getEmail() + "player=" + "white=" + curUser.getNickname());				
+			}
+			else{
+				usersWaitingList.add(curUser);
+				channelService.sendMessage(new ChannelMessage(curUser.getEmail()+ String.valueOf(1), "wait="+ curUser.getNickname())); 
+//				System.out.println("add user in usersWaitingList: " + curUser.getNickname());
+			}
+		}
+//		for(User w : usersWaitingList){
+////			System.out.println("User in waiting List: "+w);
+//		}
+	}	
+}

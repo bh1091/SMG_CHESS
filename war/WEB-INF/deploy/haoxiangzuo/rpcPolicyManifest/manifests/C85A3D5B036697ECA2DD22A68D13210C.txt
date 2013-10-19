@@ -1,0 +1,2 @@
+serviceClass: org.haoxiangzuo.hw6.client.ChessService
+path: 32892E85F36E708EDD97FC602585E804.gwt.rpc
